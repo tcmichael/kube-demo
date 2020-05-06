@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-mutate-webhook
+  labels:
+    app: ingress-mutate-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingress-mutate-webhook
+  template:
+    metadata:
+      labels:
+        app: ingress-mutate-webhook
+    spec:
+      containers:
+        - name: ingress-mutate-webhook
+          command: ["/app/webhook"]
+          image: tcmichael128/smartnews:v1.0.1
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: webhook      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-mutate-webhook
+  labels:
+    app: ingress-mutate-webhook
+spec:
+  ports:
+  - port: 443
+    targetPort: 10080
+  selector:
+    app: ingress-mutate-webhook

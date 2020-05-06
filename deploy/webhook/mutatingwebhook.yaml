@@ -1,0 +1,19 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: webhook-cfg
+  labels:
+    app: webhook
+webhooks:
+- name: ingress.spaas.smartnews.com
+  clientConfig:
+    service:
+      name: ingress-mutate-webhook
+      namespace: default
+      path: "/webhooks/mutating/ingress"
+    caBundle: ${CA_BUNDLE}
+  rules:
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["networking.k8s.io"]
+    apiVersions: ["v1beta1"]
+    resources: ["ingresses"]
