@@ -2,7 +2,7 @@
 
 Admission webhooks are HTTP callbacks that receive admission requests and do something with them.
 - Mutating Webhook: Webhook that can change a request as well as accept/reject
-- Validating Webhook: ebhook that cannot change request, but can accept or reject.
+- Validating Webhook: webhook that cannot change request, but can accept or reject.
 
 ## How to implement a webhook (use demo as an example)
 1. Develop an webhook server
